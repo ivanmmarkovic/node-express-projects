@@ -1,2 +1,2 @@
 # node-express-projects
-Different express projetcs
+Different express projects
