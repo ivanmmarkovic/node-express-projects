@@ -34,6 +34,27 @@ app.get('/create', async (req, res, next) => {
     }
 });
 
+app.post('/create', async (req, res, next) => {
+    try {
+        let articles = ArticleModel.create({...req.body});
+		res.redirect('/');
+    } catch (error) {
+        res.render('error');
+    }
+});
+
+
+app.get('/delete/:id', async (req, res, next) => {
+    try {
+		let id = req.params.id;
+		console.log('------------------------------------------', id);
+        let articles = await ArticleModel.findByIdAndDelete(id);
+		res.redirect('/');
+    } catch (error) {
+        res.render('error');
+    }
+});
+
 
 
 app.listen(5000, () => console.log('Listen on port 5000'));

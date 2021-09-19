@@ -10,14 +10,15 @@
 
 <h1>Articles</h1>
 
-<% for(let article in articles) { %>
+<% for(let article of articles) { %>
     <div class="article-box">
-        <p>article.title</p>
-        <p>article.body</p>
+        <p><%= article.title %></p>
+        <p><%= article.body %></p>
         <button>Update</button>
-        <button>Delete</button>
+        <a href="/delete/<%= article._id %>">Delete</a>
     </div>
 <% } %>
 
+<script src="js/delete.js"></script>
 </body>
 </html>
