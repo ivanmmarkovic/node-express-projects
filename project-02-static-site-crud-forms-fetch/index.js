@@ -47,7 +47,6 @@ app.post('/create', async (req, res, next) => {
 app.get('/delete/:id', async (req, res, next) => {
     try {
 		let id = req.params.id;
-		console.log('------------------------------------------', id);
         let articles = await ArticleModel.findByIdAndDelete(id);
 		res.redirect('/');
     } catch (error) {
@@ -55,6 +54,14 @@ app.get('/delete/:id', async (req, res, next) => {
     }
 });
 
-
+app.get('/update/:id', async (req, res, next) => {
+    try {
+		let id = req.params.id;
+        let article = await ArticleModel.findById(id);
+		res.render('update', {title: 'Update article', article});
+    } catch (error) {
+        res.render('error');
+    }
+});
 
 app.listen(5000, () => console.log('Listen on port 5000'));

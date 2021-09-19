@@ -14,7 +14,7 @@
     <div class="article-box">
         <p><%= article.title %></p>
         <p><%= article.body %></p>
-        <button>Update</button>
+        <a href="/update/<%= article._id %>">Update</a>
         <a href="/delete/<%= article._id %>">Delete</a>
     </div>
 <% } %>
