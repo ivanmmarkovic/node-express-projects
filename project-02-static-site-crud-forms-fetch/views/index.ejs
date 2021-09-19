@@ -10,7 +10,14 @@
 
 <h1>Articles</h1>
 
-
+<% for(let article in articles) { %>
+    <div class="article-box">
+        <p>article.title</p>
+        <p>article.body</p>
+        <button>Update</button>
+        <button>Delete</button>
+    </div>
+<% } %>
 
 </body>
 </html>

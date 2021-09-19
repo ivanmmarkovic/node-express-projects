@@ -20,11 +20,20 @@ app.set('view engine', 'ejs');
 app.get('/', async (req, res, next) => {
     try {
         let articles = await ArticleModel.find();
-        res.render('index', {title: 'Index', articles});
+        res.render('index', {title: 'Home | Articles', articles});
     } catch (error) {
         res.render('error');
     }
 });
+
+app.get('/create', async (req, res, next) => {
+    try {
+        res.render('create', {title: 'Create article'});
+    } catch (error) {
+        res.render('error');
+    }
+});
+
 
 
 app.listen(5000, () => console.log('Listen on port 5000'));
