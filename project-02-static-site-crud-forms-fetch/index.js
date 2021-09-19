@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 
 const mongoose = require('mongoose');
+const ArticleModel = require('./models/Article');
+
 const ejs = require('ejs');
 
 app.set('view engine', 'ejs');
