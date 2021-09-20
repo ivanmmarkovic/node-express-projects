@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 
+app.use(express.static('public'));
+
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
     useNewUrlParser: true,
@@ -36,7 +38,7 @@ app.get('/create', async (req, res, next) => {
 
 app.post('/create', async (req, res, next) => {
     try {
-        let articles = ArticleModel.create({...req.body});
+        let article = ArticleModel.create({...req.body});
 		res.redirect('/');
     } catch (error) {
         res.render('error');
@@ -63,5 +65,19 @@ app.get('/update/:id', async (req, res, next) => {
         res.render('error');
     }
 });
+
+app.patch('/update/:id', async (req, res, next) => {
+    try {
+		let id = req.params.id;
+        await ArticleModel.findByIdAndUpdate(id, {...req.body});
+        res.json({
+            message: 'Updated'
+        })
+    } catch (error) {
+        res.render('error');
+    }
+});
+
+app.use('*', async (req, res) => res.render('404', {'title': '404'}));
 
 app.listen(5000, () => console.log('Listen on port 5000'));

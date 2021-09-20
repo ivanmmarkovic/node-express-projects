@@ -11,10 +11,12 @@
 <h1>Create article</h1>
 
 <form method="">
-    <input type="text" name="title" value="<%= article.title %>"/>
-    <textarea name="body"><%= article.body %></textarea>
-    <input type="submit" value="Update" />
+    <input type="hidden" id="hidden" value="<%= article._id %>" />
+    <input type="text" id="text" name="title" value="<%= article.title %>"/>
+    <textarea name="body" id="textarea"><%= article.body %></textarea>
+    <input type="submit" value="Update" id="btn"/>
 </form>
 
+<script src="../js/update.js"></script>
 </body>
 </html>
