@@ -3,13 +3,12 @@ const app = express();
 
 app.use(express.static('public'));
 
-const mongoose = require('mongoose');
-mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true 
-});
+// const mongoose = require('mongoose');
+// mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true 
+// });
 
-const ArticleModel = require('./models/Article');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
