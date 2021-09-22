@@ -1,7 +1,7 @@
 
 ## Project description
 
-- Three static pages - home, create, update
+- Static pages
 - Header with links
 - ejs templating
 - assets(css, images)
@@ -9,6 +9,8 @@
 - 404 page
 - update is done with fetch
     - import .js file from /public/js/update.js
+- all fields required
+- checking of submitted data is not implemented
 
 ## Start project
 
