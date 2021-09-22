@@ -1,14 +1,15 @@
 
 ## Project description
 
-- Three static pages - home, create, update
+- Static pages
+- Login or create profile
 - Header with links
 - ejs templating
 - assets(css, images)
 - async route handlers
 - 404 page
-- update is done with fetch
-    - import .js file from /public/js/update.js
+- private page - visible only for logged users
+- Authentification - session, in memory storage 
 
 ## Start project
 
