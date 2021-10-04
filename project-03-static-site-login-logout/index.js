@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 app.use(express.static('public'));
 
+const bcrypt = require('bcrypt');
+
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
     useNewUrlParser: true,
@@ -42,7 +44,7 @@ app.get('/create', async (req, res, next) => {
 
 app.post('/create', async (req, res, next) => {
     let body = {...req.body};
-    body.password = await bcyrpt.hash(body.password, 5);
+    body.password = await bcrypt.hash(body.password, 5);
     let user = await UserModel.create({...body});
     req.session.userId = user._id;
     res.redirect('/');
@@ -55,7 +57,7 @@ app.get('/login', async (req, res, next) => {
 app.post('/login', async (req, res, next) => {
     let {username, email, password} = {...req.body};
     let user = await UserModel.findOne({username});
-    let matches = await bcyrpt.compare(password, user.password);
+    let matches = await bcrypt.compare(password, user.password);
     if(matches){
         req.session.userId = user._id;
         res.redirect('/');
