@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const { restart } = require('nodemon');
 
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
     useNewUrlParser: true,
@@ -34,6 +35,27 @@ app.get('/articles', async (req, res, next) => {
     }
 });
 
+app.get('/articles/:id', async (req, res, next) => {
+    try {
+        let {id} = req.params;
+        let article = await ArticleModel.findById(id);
+        res.json(article);
+    } catch (error) {
+        res.json(error);
+    }
+});
+
+
+app.delete('/articles/:id', async (req, res, next) => {
+    try {
+        let {id} = req.params;
+        //await ArticleModel.deleteOne({"_id": id});
+        await ArticleModel.findByIdAndDelete(id); // same as code above
+        res.json(null);
+    } catch (error) {
+        res.json(error);
+    }
+});
 
 
 app.listen(5000, () => console.log('Listen on port 5000'));
