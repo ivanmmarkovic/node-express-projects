@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const { restart } = require('nodemon');
 
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
     useNewUrlParser: true,
@@ -39,6 +38,16 @@ app.get('/articles/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let article = await ArticleModel.findById(id);
+        res.json(article);
+    } catch (error) {
+        res.json(error);
+    }
+});
+
+app.patch('/articles/:id', async (req, res, next) => {
+    try {
+        let {id} = req.params;
+        let article = await ArticleModel.findByIdAndUpdate(id, {...req.body}, {new: true});
         res.json(article);
     } catch (error) {
         res.json(error);
