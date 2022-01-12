@@ -18,12 +18,13 @@ npm run start-dev
 
 Method | Path | Description
 -------|------|------------ 
-POST   |/articles                   | create article                    
-GET    |/articles                   | get all articles                     
-GET    |/articles/:id               | get article by id                   
-PATCH  |/articles/:id               | update article                    
-DELETE |/articles/:id               | delete article  
-POST   |/articles/:id/comments      | create comment
+POST       |/articles                           | create article                    
+GET        |/articles                           | get all articles                     
+GET        |/articles/:id                       | get article by id                   
+PATCH      |/articles/:id                       | update article                    
+DELETE     |/articles/:id                       | delete article  
+POST       |/articles/:id/comments              | create comment
+DELETE     |/articles/:id/comments/:commentId   | delete comment
 
 
 Request body when creating article
