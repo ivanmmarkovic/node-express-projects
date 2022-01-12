@@ -21,7 +21,8 @@ app.post('/articles', async (req, res, next) => {
         });
         res.status(201).json(article);
     } catch (error) {
-        res.status(500).json(error);
+        error.status = 400;
+        next(error);
     }
 });
 
@@ -30,7 +31,7 @@ app.get('/articles', async (req, res, next) => {
         let articles = await ArticleModel.find();
         res.status(200).json(articles);
     } catch (error) {
-        res.status(500).json(error);
+        next(error);
     }
 });
 
@@ -38,6 +39,9 @@ app.get('/articles/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let article = await ArticleModel.findById(id);
+        if(article == null){
+            res.status(404).json({message: 'Not found'});
+        }
         res.status(200).json(article);
     } catch (error) {
         res.status(500).json(error);
@@ -48,6 +52,9 @@ app.patch('/articles/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let article = await ArticleModel.findByIdAndUpdate(id, {...req.body}, {new: true});
+        if(article == null){
+            res.status(404).json({message: 'Not found'});
+        }
         res.status(200).json(article);
     } catch (error) {
         res.status(500).json(error);
@@ -65,5 +72,11 @@ app.delete('/articles/:id', async (req, res, next) => {
     }
 });
 
+app.use((err, req, res, next) => {
+    let error = {};
+    error.status = err.status || 500;
+    error.message = err.message || 'Internal server error';
+    res.json(error);
+});
 
 app.listen(5000, () => console.log('Listen on port 5000'));
