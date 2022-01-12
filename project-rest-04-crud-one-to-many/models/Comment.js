@@ -6,6 +6,10 @@ const CommentSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date
+    },
+    article: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "ArticleModel"
     }
 });
 

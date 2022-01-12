@@ -8,6 +8,7 @@ mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=a
 });
 
 const ArticleModel = require('./models/Article');
+const CommentModel = require('./models/Comment');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -38,7 +39,7 @@ app.get('/articles', async (req, res, next) => {
 app.get('/articles/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
-        let article = await ArticleModel.findById(id);
+        let article = await ArticleModel.findById(id).populate("comments");
         if(article == null){
             res.status(404).json({message: 'Not found'});
         }
@@ -69,6 +70,20 @@ app.delete('/articles/:id', async (req, res, next) => {
         res.status(204).json(null);
     } catch (error) {
         res.status(500).json(error);
+    }
+});
+
+
+app.post("/articles/:id/comments", async (req, res, next) => {
+    try {
+        let {id} = req.params;
+        let {body} = req.body;
+        let comment = await CommentModel.create({body, article: id, createdAt: new Date().toDateString()})
+        let article = await ArticleModel.findById(id);
+        await ArticleModel.findByIdAndUpdate(id, {comments: [...article.comments, comment._id]});
+        res.status(201).json(comment);
+    } catch (error) {
+        next(err);
     }
 });
 
