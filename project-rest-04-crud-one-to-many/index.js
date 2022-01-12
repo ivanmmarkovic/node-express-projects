@@ -91,9 +91,7 @@ app.delete("/articles/:id/comments/:commentId", async (req, res, next) => {
     try{
         let {id, commentId} = req.params;
         let article = await ArticleModel.findById(id);
-        console.log(article);
         let {comments} = article;
-        console.log(comments);
         comments = comments.filter(comment => comment != commentId);
         await ArticleModel.findByIdAndUpdate(id, {comments});
         await CommentModel.findOneAndDelete(commentId);
