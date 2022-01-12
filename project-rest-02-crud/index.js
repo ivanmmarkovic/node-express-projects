@@ -19,18 +19,18 @@ app.post('/articles', async (req, res, next) => {
             title, body, 
             createdAt: new Date().toDateString()
         });
-        res.json(article);
+        res.status(201).json(article);
     } catch (error) {
-        res.json(error);
+        res.status(500).json(error);
     }
 });
 
 app.get('/articles', async (req, res, next) => {
     try {
         let articles = await ArticleModel.find();
-        res.json(articles);
+        res.status(200).json(articles);
     } catch (error) {
-        res.json(error);
+        res.status(500).json(error);
     }
 });
 
@@ -38,9 +38,9 @@ app.get('/articles/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let article = await ArticleModel.findById(id);
-        res.json(article);
+        res.status(200).json(article);
     } catch (error) {
-        res.json(error);
+        res.status(500).json(error);
     }
 });
 
@@ -48,21 +48,20 @@ app.patch('/articles/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let article = await ArticleModel.findByIdAndUpdate(id, {...req.body}, {new: true});
-        res.json(article);
+        res.status(200).json(article);
     } catch (error) {
-        res.json(error);
+        res.status(500).json(error);
     }
 });
-
 
 app.delete('/articles/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         //await ArticleModel.deleteOne({"_id": id});
         await ArticleModel.findByIdAndDelete(id); // same as code above
-        res.json(null);
+        res.status(204).json(null);
     } catch (error) {
-        res.json(error);
+        res.status(500).json(error);
     }
 });
 
