@@ -87,6 +87,23 @@ app.post("/articles/:id/comments", async (req, res, next) => {
     }
 });
 
+app.delete("/articles/:id/comments/:commentId", async (req, res, next) => {
+    try{
+        let {id, commentId} = req.params;
+        let article = await ArticleModel.findById(id);
+        console.log(article);
+        let {comments} = article;
+        console.log(comments);
+        comments = comments.filter(comment => comment != commentId);
+        await ArticleModel.findByIdAndUpdate(id, {comments});
+        await CommentModel.findOneAndDelete(commentId);
+        res.status(204).json(null);
+    }catch(error){
+        next(error);
+    }
+
+});
+
 app.use((err, req, res, next) => {
     let error = {};
     error.status = err.status || 500;
