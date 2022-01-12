@@ -12,7 +12,11 @@ const ArticleSchema = new mongoose.Schema({
     },
     createdAt: {
         type: Date
-    }
+    },
+    comments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "CommentModel"
+    }]
 });
 
 
