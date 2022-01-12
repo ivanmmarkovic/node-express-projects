@@ -1,6 +1,4 @@
 
-
-
 Open terminal in project directory and run:
 
 ```
@@ -15,6 +13,3 @@ npm install
 npm run start-dev
 
 ```
-
-# TODO
-- handling errors
