@@ -87,6 +87,16 @@ app.post("/articles/:id/comments", async (req, res, next) => {
     }
 });
 
+app.get("/articles/:id/comments/:commentId", async (req, res, next) => {
+    try {
+        let {commentId} = req.params;
+        let comment = await CommentModel.findById(commentId);
+        res.status(200).json(comment);
+    } catch (error) {
+        next(err);
+    }
+});
+
 app.patch("/articles/:id/comments/:commentId", async (req, res, next) => {
     try {
         let {id, commentId} = req.params;
