@@ -87,6 +87,17 @@ app.post("/articles/:id/comments", async (req, res, next) => {
     }
 });
 
+app.patch("/articles/:id/comments/:commentId", async (req, res, next) => {
+    try {
+        let {id, commentId} = req.params;
+        let {body} = req.body;
+        let comment = await CommentModel.findByIdAndUpdate(commentId, {body}, {new: true});
+        res.status(200).json(comment);
+    } catch (error) {
+        next(err);
+    }
+});
+
 app.delete("/articles/:id/comments/:commentId", async (req, res, next) => {
     try{
         let {id, commentId} = req.params;
