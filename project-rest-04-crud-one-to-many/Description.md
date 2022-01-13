@@ -50,9 +50,3 @@ Request body when creating comment
   "body": "Body of the first comment"
 }
 ```
-
-
-# TODO
-- handle other CRUD methods for comment
-- provide populate on comment side
-- handle errors for comments crud
