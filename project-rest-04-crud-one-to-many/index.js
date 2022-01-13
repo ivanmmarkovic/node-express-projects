@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const { populate } = require('./models/Article');
 
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
     useNewUrlParser: true,
@@ -90,7 +91,7 @@ app.post("/articles/:id/comments", async (req, res, next) => {
 app.get("/articles/:id/comments/:commentId", async (req, res, next) => {
     try {
         let {commentId} = req.params;
-        let comment = await CommentModel.findById(commentId);
+        let comment = await CommentModel.findById(commentId).populate("article");
         res.status(200).json(comment);
     } catch (error) {
         next(err);
