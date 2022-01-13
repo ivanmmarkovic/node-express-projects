@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/", ArticleRouter);
-app.use("/", ArticleRouter);
+app.use("/", CommentRouter);
 
 app.use((err, req, res, next) => {
     let error = {};
