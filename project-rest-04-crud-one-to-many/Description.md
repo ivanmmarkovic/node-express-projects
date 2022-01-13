@@ -24,6 +24,7 @@ GET        |/articles/:id                       | get article by id
 PATCH      |/articles/:id                       | update article                    
 DELETE     |/articles/:id                       | delete article  
 POST       |/articles/:id/comments              | create comment
+GET        |/articles/:id/comments/:commentId   | get comment
 PATCH      |/articles/:id/comments/:commentId   | update comment
 DELETE     |/articles/:id/comments/:commentId   | delete comment
 
