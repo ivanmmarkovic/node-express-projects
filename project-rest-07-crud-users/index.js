@@ -8,14 +8,28 @@ mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=a
     useUnifiedTopology: true 
 });
 
-const ArticleRouter = require('./routes/Article');
-const CommentRouter = require('./routes/Comment');
-
+const UserModel = require('./models/User');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.post('/users', async (req, res, next) => {
+
+});
+
 app.get('/users', async (req, res, next) => {
+
+});
+
+app.get('/users/:id', async (req, res, next) => {
+
+});
+
+app.patch('/users/:id', async (req, res, next) => {
+
+});
+
+app.delete('/users/:id', async (req, res, next) => {
     
 });
 
