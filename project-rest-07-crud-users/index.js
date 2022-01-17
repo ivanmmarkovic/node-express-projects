@@ -15,14 +15,8 @@ const CommentRouter = require('./routes/Comment');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use("/", ArticleRouter);
-app.use("/", CommentRouter);
-
-app.use((err, req, res, next) => {
-    let error = {};
-    error.status = err.status || 500;
-    error.message = err.message || 'Internal server error';
-    res.json(error);
+app.get('/users', async (req, res, next) => {
+    
 });
 
 app.listen(5000, () => console.log('Listen on port 5000'));
