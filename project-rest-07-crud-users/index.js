@@ -14,7 +14,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.post('/users', async (req, res, next) => {
-
+    try {
+        let {username, email} = req.body;
+        let createdAt = new Date();
+        let updatedAt = new Date();
+        let user = await UserModel.create({username, email, createdAt, updatedAt});
+        res.status(201).json(user);
+    } catch (error) {
+        next(error);
+    }
 });
 
 app.get('/users', async (req, res, next) => {
