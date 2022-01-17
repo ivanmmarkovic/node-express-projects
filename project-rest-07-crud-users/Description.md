@@ -18,36 +18,25 @@ npm run start-dev
 
 Method | Path | Description
 -------|------|------------ 
-POST       |/articles                           | create article                    
-GET        |/articles                           | get all articles                     
-GET        |/articles/:id                       | get article by id                   
-PATCH      |/articles/:id                       | update article                    
-DELETE     |/articles/:id                       | delete article  
-POST       |/articles/:id/comments              | create comment
-GET        |/articles/:id/comments/:commentId   | get comment
-PATCH      |/articles/:id/comments/:commentId   | update comment
-DELETE     |/articles/:id/comments/:commentId   | delete comment
+POST       |/users                           | create user                    
+GET        |/users                           | get all users                     
+GET        |/users/:id                       | get user by id                   
+PATCH      |/users/:id                       | update user                    
+DELETE     |/users/:id                       | delete user  
 
 
-Request body when creating article
+Request body when creating user
 ```
 {
-  "title": "First article",
-  "body": "Body of the first article"
+  "username": "john",
+  "email": "john@example.com"
 }
 ```
 
-Request body when updating article can contain both fields or only one filed
+Request body when updating user can contain both fields or only one filed
 ```
 {
-  "title": "First article",
-  "body": "Updated body of the first article"
-}
-```
-
-Request body when creating comment
-```
-{
-  "body": "Body of the first comment"
+  "username": "johnupdated",
+  "email": "johnupdated@example.com"
 }
 ```
