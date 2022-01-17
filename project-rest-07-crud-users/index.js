@@ -35,7 +35,13 @@ app.get('/users', async (req, res, next) => {
 });
 
 app.get('/users/:id', async (req, res, next) => {
-
+    try {
+        let {id} = req.params;
+        let user = await UserModel.findById(id);
+        res.status(200).json(user);
+    } catch (error) {
+        next(error);
+    }
 });
 
 app.patch('/users/:id', async (req, res, next) => {
