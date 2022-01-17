@@ -56,7 +56,13 @@ app.patch('/users/:id', async (req, res, next) => {
 });
 
 app.delete('/users/:id', async (req, res, next) => {
-    
+    try {
+        let {id} = req.params;
+        await UserModel.findByIdAndDelete(id);
+        res.status(204).json(null);
+    }catch(error){
+        next(error);
+    }
 });
 
 app.listen(5000, () => console.log('Listen on port 5000'));
