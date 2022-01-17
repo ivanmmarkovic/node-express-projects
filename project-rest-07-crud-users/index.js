@@ -45,7 +45,14 @@ app.get('/users/:id', async (req, res, next) => {
 });
 
 app.patch('/users/:id', async (req, res, next) => {
-
+    try {
+        let {id} = req.params;
+        let updatedAt = new Date();
+        let user = UserModel.findByIdAndUpdate(id, {...req.body, updatedAt}, {new: true});
+        res.status(200).json(user);
+    } catch (error) {
+        next(error);
+    }
 });
 
 app.delete('/users/:id', async (req, res, next) => {
