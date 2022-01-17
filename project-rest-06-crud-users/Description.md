@@ -1,6 +1,4 @@
 
-#### [Express error handling](https://expressjs.com/en/guide/error-handling.html)
-
 Open terminal in project directory and run:
 
 ```
