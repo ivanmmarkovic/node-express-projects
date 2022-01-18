@@ -65,4 +65,13 @@ app.delete('/users/:id', async (req, res, next) => {
     }
 });
 
+
+app.use((err, req, res, next) => {
+    let error = {
+        message: err.message || "Internal server error",
+        status: err.status || 500
+    };
+    res.status(err.status).json(error);
+});
+
 app.listen(5000, () => console.log('Listen on port 5000'));

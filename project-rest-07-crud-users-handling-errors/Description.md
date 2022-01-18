@@ -48,10 +48,13 @@ Request body when updating user can contain both fields or only one filed
 
 ### Get user by id - wrong id
 - next(error) - return null, should return 404
+- app.use((err, req, res, next) ...) - return null, should return 404
 
 ### Update user by id - wrong id
 - next(error) - return null, should return 404
+- app.use((err, req, res, next) ...) - return null, should return 404
 
 ### Delete user by id - wrong id
 - next(error) - return null, *could* return 404 or null
+- app.use((err, req, res, next) ...) - return null, *could* return 404 or null
 
