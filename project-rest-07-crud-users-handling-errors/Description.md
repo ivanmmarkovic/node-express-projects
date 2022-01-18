@@ -55,6 +55,16 @@ Request body when updating user can contain both fields or only one filed
 - app.use((err, req, res, next) ...) - return null, should return 404
 
 ### Delete user by id - wrong id
-- next(error) - return null, *could* return 404 or null
-- app.use((err, req, res, next) ...) - return null, *could* return 404 or null
+- next(error) - return null
+- app.use((err, req, res, next) ...) - return null
+
+
+### Get and update user by id
+```
+
+if(user == null){
+  res.status(404).json({message: "Not found"});
+}
+
+```
 

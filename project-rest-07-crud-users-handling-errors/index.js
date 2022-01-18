@@ -52,6 +52,9 @@ app.patch('/users/:id', async (req, res, next) => {
         let {id} = req.params;
         let updatedAt = new Date();
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt}, {new: true});
+        if(user == null){
+            res.status(404).json({message: "Not found"});
+        }
         res.status(200).json(user);
     } catch (error) {
         next(error);
