@@ -38,6 +38,9 @@ app.get('/users/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let user = await UserModel.findById(id);
+        if(user == null){
+            res.status(404).json({message: "Not found"});
+        }
         res.status(200).json(user);
     } catch (error) {
         next(error);
