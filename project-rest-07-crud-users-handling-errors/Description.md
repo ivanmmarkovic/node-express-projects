@@ -40,3 +40,18 @@ Request body when updating user can contain both fields or only one filed
   "email": "johnupdated@example.com"
 }
 ```
+
+# Error handling
+
+### Create user - missing field
+- next(error)
+
+### Get user by id - wrong id
+- next(error) - return null, should return 404
+
+### Update user by id - wrong id
+- next(error) - return null, should return 404
+
+### Delete user by id - wrong id
+- next(error) - return null, *could* return 404 or null
+
