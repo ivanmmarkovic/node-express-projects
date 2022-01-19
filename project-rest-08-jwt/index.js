@@ -42,10 +42,16 @@ app.post("/login", async (req, res, next) => {
 
 app.post('/users', async (req, res, next) => {
     try {
-        let {username, email} = req.body;
+        let {username, email, password} = req.body;
+        password = bcrypt.hash(password, 10);
         let createdAt = new Date();
         let updatedAt = new Date();
         let user = await UserModel.create({username, email, createdAt, updatedAt});
+        const token = jwt.sign({username, id: user._id}, global.jwtKey, {
+            algorithm: "HS256",
+            expiresIn: global.jwtExpires
+        });
+        res.set("Authorization", "Bearer " + token);
         res.status(201).json(user);
     } catch (error) {
         next(error);
@@ -75,6 +81,7 @@ app.patch('/users/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let updatedAt = new Date();
+        
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt}, {new: true});
         res.status(200).json(user);
     } catch (error) {
