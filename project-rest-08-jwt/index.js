@@ -43,10 +43,10 @@ app.post("/login", async (req, res, next) => {
 app.post('/users', async (req, res, next) => {
     try {
         let {username, email, password} = req.body;
-        password = bcrypt.hash(password, 10);
+        password = await bcrypt.hash(password, 10);
         let createdAt = new Date();
         let updatedAt = new Date();
-        let user = await UserModel.create({username, email, createdAt, updatedAt});
+        let user = await UserModel.create({username, email, password, createdAt, updatedAt});
         const token = jwt.sign({username, id: user._id}, global.jwtKey, {
             algorithm: "HS256",
             expiresIn: global.jwtExpires
@@ -81,7 +81,7 @@ app.patch('/users/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let updatedAt = new Date();
-        
+
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt}, {new: true});
         res.status(200).json(user);
     } catch (error) {
