@@ -81,7 +81,10 @@ app.patch('/users/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let updatedAt = new Date();
-
+        console.log(req.body);
+        if(req.body.password != undefined){
+            req.body.password = await bcrypt.hash(req.body.password, 10);
+        }
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt}, {new: true});
         res.status(200).json(user);
     } catch (error) {
