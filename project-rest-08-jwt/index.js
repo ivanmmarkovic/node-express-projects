@@ -21,11 +21,11 @@ app.use(express.json());
 app.post("/login", async (req, res, next) => {
     try {
         let {username, password} = req.body;
-        let user = await UserModel.find({username});
+        let user = await UserModel.findOne({username});
         if(user == null){
             res.status(404).json({message: `User with ${username} not found`});
         }
-        let matches = await bcrypt.compare(user.password, password);
+        let matches = await bcrypt.compare(password, user.password);
         if(!matches){
             res.status(400).json({message: 'Invalid password'});
         }
