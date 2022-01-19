@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
@@ -8,10 +10,35 @@ mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=a
     useUnifiedTopology: true 
 });
 
+global.jwtKey = "secret";
+global.jwtExpires = 24 * 60 * 60 * 1000;
+
 const UserModel = require('./models/User');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+app.post("/login", async (req, res, next) => {
+    try {
+        let {username, password} = req.body;
+        let user = await UserModel.find({username});
+        if(user == null){
+            res.status(404).json({message: `User with ${username} not found`});
+        }
+        let matches = await bcrypt.compare(user.password, password);
+        if(!matches){
+            res.status(400).json({message: 'Invalid password'});
+        }
+        let token = jwt.sign({username, id: user._id}, global.jwtKey, {
+            algorithm: "HS256",
+            expiresIn: global.jwtExpires
+        });
+        res.set("Authorization", "Bearer " + token);
+        res.status(200).json(null);
+    } catch (error) {
+        next(error);
+    }
+});
 
 app.post('/users', async (req, res, next) => {
     try {
