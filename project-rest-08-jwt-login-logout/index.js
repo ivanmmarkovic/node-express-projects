@@ -50,7 +50,7 @@ app.post("/logout", async (req, res, next) => {
         res.status(200);
         res.send(null);
     } catch (error) {
-        
+        next(error);   
     }
 });
 
