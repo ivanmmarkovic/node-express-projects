@@ -16,6 +16,8 @@ npm run start-dev
 
 Method | Path | Description
 -------|------|------------ 
+POST       |/login                           | login
+POST       |/logout                          | logout
 POST       |/users                           | create user                    
 GET        |/users                           | get all users                     
 GET        |/users/:id                       | get user by id                   
@@ -27,11 +29,13 @@ Request body when creating user
 ```
 {
   "username": "john",
-  "email": "john@example.com"
+  "email": "john@example.com",
+  "password": "john"
 }
 ```
 
-Request body when updating user can contain both fields or only one filed
+Request body when updating user can contain all fields or some fileds. 
+If user submit new password, password will be updated.
 ```
 {
   "username": "johnupdated",
