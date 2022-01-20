@@ -27,7 +27,8 @@ let authMiddleware = (req, res, next) => {
     try {
         let [, token] = bearer.split(" ");
         payload = jwt.verify(token, global.jwtKey);
-        console.log('-------------', payload);
+        // add payload to req
+        req.payload = payload;
         next();
     } catch (error) {
         if(error instanceof jwt.JsonWebTokenError){
@@ -143,7 +144,8 @@ app.get("/public", async (req, res, next) => {
     res.status(200).json({message: "Public page"});
 });
 
-app.get("/protected", async (req, res, next) => {
+app.get("/protected", authMiddleware, async (req, res, next) => {
+    console.log(req.payload);
     res.status(200).json({message: "Protected page"});
 });
 
