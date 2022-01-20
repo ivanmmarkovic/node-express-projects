@@ -14,6 +14,21 @@ npm run start-dev
 
 ```
 
+In authMiddleware, add payload to req object
+```
+payload = jwt.verify(token, global.jwtKey);
+// add payload to req
+req.payload = payload;
+```
+Access payload in controller
+```
+app.get("/protected", authMiddleware, async (req, res, next) => {
+    console.log(req.payload);
+    res.status(200).json({message: "Protected page"});
+});
+```
+
+
 Method | Path | Description
 -------|------|------------ 
 POST       |/login                           | login
@@ -22,7 +37,9 @@ POST       |/users                           | create user
 GET        |/users                           | get all users                     
 GET        |/users/:id                       | get user by id                   
 PATCH      |/users/:id                       | update user                    
-DELETE     |/users/:id                       | delete user  
+DELETE     |/users/:id                       | delete user 
+GET        |/public                          | all users can access
+GET        |/protected                       | only logged users can access
 
 
 Request body when creating user
