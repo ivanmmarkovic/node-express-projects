@@ -18,6 +18,29 @@ const UserModel = require('./models/User');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+let authMiddleware = (req, res, next) => {
+    let bearer = req.header("Authorization");
+    if(!bearer){
+        res.status(401);
+        res.send({message: "Unauthorized"});
+    }
+    try {
+        let [, token] = bearer.split(" ");
+        payload = jwt.verify(token, global.jwtKey);
+        console.log('-------------', payload);
+        next();
+    } catch (error) {
+        if(error instanceof jwt.JsonWebTokenError){
+            res.status(401);
+            return res.send({message: "Unauthorized"});
+        }
+        else{
+            res.status(400);
+            return res.send({message: "Bad Request"});
+        }
+    }
+};
+
 app.post("/login", async (req, res, next) => {
     try {
         let {username, password} = req.body;
@@ -115,5 +138,7 @@ app.delete('/users/:id', async (req, res, next) => {
         next(error);
     }
 });
+
+
 
 app.listen(5000, () => console.log('Listen on port 5000'));
