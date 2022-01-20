@@ -139,6 +139,13 @@ app.delete('/users/:id', async (req, res, next) => {
     }
 });
 
+app.get("/public", async (req, res, next) => {
+    res.status(200).json({message: "Public page"});
+});
+
+app.get("/protected", async (req, res, next) => {
+    res.status(200).json({message: "Protected page"});
+});
 
 
 app.listen(5000, () => console.log('Listen on port 5000'));
