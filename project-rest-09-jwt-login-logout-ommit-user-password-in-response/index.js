@@ -65,8 +65,12 @@ app.post('/users', async (req, res, next) => {
             algorithm: "HS256",
             expiresIn: global.jwtExpires
         });
+        let _id;
+        ({username, _id} = user);
+
         res.set("Authorization", "Bearer " + token);
-        res.status(201).json({...username, _id});
+        //res.status(201).json({...user});
+        res.status(201).json({username, _id});
     } catch (error) {
         next(error);
     }
@@ -85,7 +89,8 @@ app.get('/users/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let user = await UserModel.findById(id);
-        res.status(200).json({...username, _id});
+        let {username, _id} = user;
+        res.status(200).json({username, _id});
     } catch (error) {
         next(error);
     }
@@ -100,7 +105,8 @@ app.patch('/users/:id', async (req, res, next) => {
             req.body.password = await bcrypt.hash(req.body.password, 10);
         }
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt}, {new: true});
-        res.status(200).json({...username, _id});
+        let {username, _id} = user;
+        res.status(200).json({username, _id});
     } catch (error) {
         next(error);
     }
