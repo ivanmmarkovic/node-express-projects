@@ -145,6 +145,7 @@ app.get("/public", async (req, res, next) => {
 });
 
 app.get("/protected", authMiddleware, async (req, res, next) => {
+    // payload is set on req object in authMiddleware
     console.log(req.payload);
     res.status(200).json({message: "Protected page"});
 });
