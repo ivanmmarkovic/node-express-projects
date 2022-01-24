@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const UserController = require('../controller/UserController');
+const authMiddleware = require('../middleware/AuthMiddleware');
 
 router 
     .route('/users')
@@ -10,8 +11,8 @@ router
 
 router 
     .route('/users/:id')
-        .patch(UserController.updateById)
+        .patch(authMiddleware, UserController.updateById)
         .get(UserController.findById)
-        .delete(UserController.deleteById);
+        .delete(authMiddleware, UserController.deleteById);
 
 module.exports = router;

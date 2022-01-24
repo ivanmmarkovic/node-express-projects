@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const UserModel = require('./models/User');
 
-
 const create = async (req, res, next) => {
     try {
         let {username, email, password} = req.body;
