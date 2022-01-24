@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const userRouter = require('./routes/UserRouter');
+const authRouter = require('./routes/AuthRouter');
 
 
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
@@ -18,6 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
+app.use('/', userRouter);
+app.use('/', authRouter);
 
 app.get("/public", async (req, res, next) => {
     res.status(200).json({message: "Public page"});
