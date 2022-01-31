@@ -43,7 +43,6 @@ const updateById = async (req, res, next) => {
     try {
         let {id} = req.params;
         let updatedAt = new Date();
-        console.log(req.body);
         if(req.body.password != undefined){
             req.body.password = await bcrypt.hash(req.body.password, 10);
         }
