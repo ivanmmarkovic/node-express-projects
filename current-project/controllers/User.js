@@ -10,6 +10,11 @@ const create = async (req, res, next) => {
         let {username, email, password} = req.body;
         password = await bcrypt.hash(password, 10);
         let user = await UserModel.create({username, email, password, createdAt: new Date(), updatedAt: new Date()});
+        let token = jwt.sign({username: user.username, id: user._id}, global.jwtKey, {
+            algorithm: "HS256",
+            expiresIn: global.jwtExpires
+        });
+        res.set("Authorization", "Bearer " + token);
         res.status(201).json(user);
     } catch (error) {
         next(error);
