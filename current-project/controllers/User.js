@@ -1,5 +1,6 @@
 
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const UserModel = require('../models/User');
 
@@ -9,8 +10,8 @@ const create = async (req, res, next) => {
     try {
         let {username, email, password} = req.body;
         password = await bcrypt.hash(password, 10);
-        let user = await UserModel.create({username, email, password, createdAt: new Date(), updatedAt: new Date()});
-        let token = jwt.sign({username: user.username, id: user._id}, global.jwtKey, {
+        let user = await UserModel.create({username, email, password, role: 'user', createdAt: new Date(), updatedAt: new Date()});
+        let token = jwt.sign({username: user.username, id: user._id, role: user.role}, global.jwtKey, {
             algorithm: "HS256",
             expiresIn: global.jwtExpires
         });
@@ -45,6 +46,8 @@ const findById = async (req, res, next) => {
 const updateById = async (req, res, next) => {
     try {
         let {id} = req.params;
+        let {payload} = req.payload;
+        console.log('-------------------------------', payload);
         if(req.body.password){
             req.body.password = await bcrypt.hash(req.body.password, 10);
         }
@@ -58,6 +61,8 @@ const updateById = async (req, res, next) => {
 const deleteById = async (req, res, next) => {
     try {
         let {id} = req.params;
+        let {payload} = req.payload;
+        console.log('-------------------------------', payload);
         let user = await UserModel.findByIdAndDelete(id);
         res.status(204).json(null);
     } catch (error) {
