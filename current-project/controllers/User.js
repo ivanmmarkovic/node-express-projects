@@ -4,10 +4,6 @@ const jwt = require('jsonwebtoken');
 
 const UserModel = require('../models/User');
 
-
-
-
-
 const create = async (req, res, next) => {
     try {
         let {username, email, password} = req.body;
@@ -48,7 +44,10 @@ const findById = async (req, res, next) => {
 const updateById = async (req, res, next) => {
     try {
         let {id} = req.params;
-        let {payload} = req;
+        let {username, id: userId, role} = req.payload;
+        if(userId != id){
+            res.status(401).json({message: "Unauthorized"})
+        }
         console.log('-------------------------------', payload);
         if(req.body.password){
             req.body.password = await bcrypt.hash(req.body.password, 10);
@@ -63,7 +62,12 @@ const updateById = async (req, res, next) => {
 const deleteById = async (req, res, next) => {
     try {
         let {id} = req.params;
-        let {payload} = req;
+        let {username, id: userId, role} = req.payload;
+        if(userId != id){
+            if(role != 'admin'){
+                res.status(403).json({message: "Forbidden"})
+            }
+        }
         console.log('-------------------------------', payload);
         let user = await UserModel.findByIdAndDelete(id);
         res.status(204).json(null);
