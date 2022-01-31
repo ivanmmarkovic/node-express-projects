@@ -5,8 +5,12 @@ const UserController = require('../controllers/User');
 router 
     .route('/')
         .post(UserController.create)
-        .get();
+        .get(UserController.findAll);
 
-
+router 
+    .route('/:id')
+        .get(UserController.findById)
+        .patch(UserController.updateById)
+        .delete(UserController.deleteById);
 
 module.exports = router;
