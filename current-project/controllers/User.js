@@ -15,7 +15,7 @@ const create = async (req, res, next) => {
 
 const findAll = async (req, res, next) => {
     try {
-        let users = await UserModel.findAll();
+        let users = await UserModel.find();
         res.status(200).json(users);
     } catch (error) {
         next(err);
@@ -25,7 +25,7 @@ const findAll = async (req, res, next) => {
 const findById = async (req, res, next) => {
     try {
         let {id} = req.params;
-        let user = await UserModel.findbyId(id);
+        let user = await UserModel.findById(id);
         res.status(200).json(user);
     } catch (error) {
         
@@ -35,7 +35,6 @@ const findById = async (req, res, next) => {
 const updateById = async (req, res, next) => {
     try {
         let {id} = req.params;
-        let {username, email}
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt: new Date()}, {new: true});
         res.status(200).json(user);
     } catch (error) {
@@ -46,7 +45,6 @@ const updateById = async (req, res, next) => {
 const deleteById = async (req, res, next) => {
     try {
         let {id} = req.params;
-        let {username, email}
         let user = await UserModel.findByIdAndDelete(id);
         res.status(204).json(null);
     } catch (error) {
