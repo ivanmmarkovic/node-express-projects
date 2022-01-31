@@ -16,8 +16,10 @@ app.use(express.json());
 
 
 const UserRouter = require('./routes/User');
+const AuthRouter = require('./routes/Auth');
 
 
 app.use("/users", UserRouter);
+app.use("/auth", AuthRouter);
 
 app.listen(5000, () => console.log('App listens on port 5000'));
