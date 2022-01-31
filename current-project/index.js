@@ -1,6 +1,14 @@
 const express = require('express');
 const app = express();
 
+mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true 
+});
+
+global.jwtKey = "secret";
+global.jwtExpires = 24 * 60 * 60 * 1000;
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
