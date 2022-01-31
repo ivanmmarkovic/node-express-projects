@@ -3,6 +3,8 @@ const router = express.Router();
 
 const UserController = require('../controllers/User');
 
+const auth = require('../middlewares/Auth');
+
 router 
     .route('/')
         .post(UserController.create)
@@ -11,7 +13,7 @@ router
 router 
     .route('/:id')
         .get(UserController.findById)
-        .patch(UserController.updateById)
-        .delete(UserController.deleteById);
+        .patch(auth, UserController.updateById)
+        .delete(auth, UserController.deleteById);
 
 module.exports = router;

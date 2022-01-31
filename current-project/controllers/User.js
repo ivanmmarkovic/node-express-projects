@@ -6,6 +6,8 @@ const UserModel = require('../models/User');
 
 
 
+
+
 const create = async (req, res, next) => {
     try {
         let {username, email, password} = req.body;
@@ -46,7 +48,7 @@ const findById = async (req, res, next) => {
 const updateById = async (req, res, next) => {
     try {
         let {id} = req.params;
-        let {payload} = req.payload;
+        let {payload} = req;
         console.log('-------------------------------', payload);
         if(req.body.password){
             req.body.password = await bcrypt.hash(req.body.password, 10);
@@ -61,7 +63,7 @@ const updateById = async (req, res, next) => {
 const deleteById = async (req, res, next) => {
     try {
         let {id} = req.params;
-        let {payload} = req.payload;
+        let {payload} = req;
         console.log('-------------------------------', payload);
         let user = await UserModel.findByIdAndDelete(id);
         res.status(204).json(null);
