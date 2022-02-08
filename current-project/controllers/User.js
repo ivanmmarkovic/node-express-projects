@@ -46,7 +46,7 @@ const updateById = async (req, res, next) => {
         let {id} = req.params;
         let {username, id: userId, role} = req.payload;
         if(userId != id){
-            res.status(401).json({message: "Unauthorized"})
+            res.status(401).json({message: "Unauthorized"});
         }
         console.log('-------------------------------', payload);
         if(req.body.password){
