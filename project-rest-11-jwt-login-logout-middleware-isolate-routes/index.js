@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const userRouter = require('./routes/UserRouter');
 const authRouter = require('./routes/AuthRouter');
-
+const authMiddleware = require('./middleware/AuthMiddleware');
 
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
     useNewUrlParser: true,
