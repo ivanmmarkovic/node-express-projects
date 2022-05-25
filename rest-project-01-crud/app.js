@@ -22,11 +22,38 @@ app.post('/articles', async (req, res, next) => {
     });
 });
 
+
 app.get("/articles", async (req, res, next) => {
     let articles = await ArticleModel.find();
     res.json({
         articles
     })
+});
+
+
+app.get("/articles/:id", async (req, res, next) => {
+    let {id} = req.params;
+    let article = await ArticleModel.findById(id);
+    res.json({
+        article
+    })
+});
+
+
+app.patch("/articles/:id", async (req, res, next) => {
+    let {id} = req.params;
+    let article = await ArticleModel.findByIdAndUpdate(id, {...req.body}, {new: true});
+    res.json({
+        article
+    })
+});
+
+
+app.delete('/articles/:id', async (req, res, next) => {
+    let {id} = req.params;
+    //await ArticleModel.deleteOne({"_id": id});
+    await ArticleModel.findByIdAndDelete(id); // same as code above
+    res.status(204).json(null);
 });
 
 app.listen(5000);
