@@ -30,6 +30,19 @@ app.get('/users/:id', async (req, res, next) => {
 });
 
 
+app.put('/users/:id', async (req, res, next) => {
+    let {id} = req.params;
+    let user = await UserModel.findByIdAndUpdate(id, {...req.body}, {new: true});
+    res.status(200).json(user);
+});
+
+app.delete('/users/:id', async (req, res, next) => {
+    let {id} = req.params;
+    let user = await UserModel.findByIdAndDelete(id);
+    res.status(204).json(null);
+});
+
+
 app.use((err, req, res, next) => {
     let error = {};
     error.status = err.status || 500;
