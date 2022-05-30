@@ -12,11 +12,30 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
+app.post('/users', async (req, res, next) => {
+    let user = await UserModel.create({...req.body, createdAt: new Date()});
+    res.status(201).json(user);
+});
+
+
+app.get('/users', async (req, res, next) => {
+    let users = await UserModel.find();
+    res.status(200).json(users);
+});
+
+app.get('/users/:id', async (req, res, next) => {
+    let {id} = req.params;
+    let user = await UserModel.findById(id);
+    res.status(200).json(user);
+});
+
+
 app.use((err, req, res, next) => {
     let error = {};
     error.status = err.status || 500;
     error.message = err.message || 'Internal server error';
     res.json(error);
 });
+
 
 app.listen(5000);
