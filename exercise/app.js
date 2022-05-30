@@ -13,7 +13,7 @@ app.use(express.json());
 
 
 app.post('/users', async (req, res, next) => {
-    let user = await UserModel.create({...req.body, createdAt: new Date()});
+    let user = await UserModel.create({...req.body, createdAt: new Date(), updatedAt: new Date()});
     res.status(201).json(user);
 });
 
@@ -32,7 +32,7 @@ app.get('/users/:id', async (req, res, next) => {
 
 app.put('/users/:id', async (req, res, next) => {
     let {id} = req.params;
-    let user = await UserModel.findByIdAndUpdate(id, {...req.body}, {new: true});
+    let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt: new Date()}, {new: true});
     res.status(200).json(user);
 });
 
