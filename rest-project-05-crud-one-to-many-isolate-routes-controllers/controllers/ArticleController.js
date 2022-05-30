@@ -5,7 +5,7 @@ const create = async (req, res, next) => {
         let {title, body} = req.body;
         let article = await ArticleModel.create({
             title, body, 
-            createdAt: new Date().toDateString()
+            createdAt: new Date()
         });
         res.status(201).json(article);
     } catch (error) {

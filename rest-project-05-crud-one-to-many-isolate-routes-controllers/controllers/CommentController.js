@@ -5,7 +5,7 @@ const create = async (req, res, next) => {
     try {
         let {id} = req.params;
         let {body} = req.body;
-        let comment = await CommentModel.create({body, article: id, createdAt: new Date().toDateString()})
+        let comment = await CommentModel.create({body, article: id, createdAt: new Date()})
         let article = await ArticleModel.findById(id);
         await ArticleModel.findByIdAndUpdate(id, {comments: [...article.comments, comment._id]});
         res.status(201).json(comment);
