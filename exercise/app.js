@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const UserModel = require('./models/User');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=admin', {
     useNewUrlParser: true,
@@ -14,7 +16,11 @@ app.use(express.json());
 
 app.post('/users', async (req, res, next) => {
     try {
-        let user = await UserModel.create({...req.body, createdAt: new Date(), updatedAt: new Date()});
+        let {username, email, password} = req.body;
+        password = await bcrypt.hash(password, 10);
+        let createdAt = new Date();
+        let updatedAt = createdAt;
+        let user = await UserModel.create({username, password, email, createdAt, updatedAt});
         res.status(201).json(user);
     } catch (error) {
         next(error);
