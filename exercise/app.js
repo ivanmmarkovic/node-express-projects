@@ -13,6 +13,9 @@ mongoose.connect('mongodb://admin:password@localhost:27017/articles?authSource=a
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+global.jwtKey = "secret";
+global.jwtExpires = 24 * 60 * 60 * 1000;
+
 
 app.post('/users', async (req, res, next) => {
     try {
@@ -21,6 +24,11 @@ app.post('/users', async (req, res, next) => {
         let createdAt = new Date();
         let updatedAt = createdAt;
         let user = await UserModel.create({username, password, email, createdAt, updatedAt});
+        let token = jwt.sign({username, id: user._id}, global.jwtKey, {
+            algorithm: "HS256",
+            expiresIn: global.jwtExpires
+        });
+        res.set('Authorization', `Bearer ${token}`);
         res.status(201).json(user);
     } catch (error) {
         next(error);
