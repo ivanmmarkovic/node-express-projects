@@ -78,9 +78,12 @@ app.get('/users/:id', async (req, res, next) => {
 });
 
 
-app.put('/users/:id', async (req, res, next) => {
+app.patch('/users/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
+        if(req.body.password != undefined){
+            req.body.password = await bcrypt.hash(req.body.password, 10);
+        }
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt: new Date()}, {new: true});
         res.status(200).json(user);
     } catch (error) {
