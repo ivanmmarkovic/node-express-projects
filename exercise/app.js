@@ -16,24 +16,43 @@ app.use(express.json());
 global.jwtKey = "secret";
 global.jwtExpires = 24 * 60 * 60 * 1000;
 
+const authMiddleware = async (req, res, next) => {
+    let bearer = req.header('Authorization');
+    if(!bearer){
+        return res.status(401).json({message: 'Unauthorized'});
+    }
+    try {
+        let [, token] = bearer.split(' ');
+        let payload = jwt.verify(token, global.jwtKey);
+        req.payload = payload;
+        next();
+    } catch (error) {
+        if(error instanceof jwt.JsonWebTokenError){
+            return res.status(401).json({message: 'Unauthorized'});
+        }
+        else{
+            return res.status(400).json({message: 'Bad request'});
+        }
+    }
+};
 
 app.post('/login', async (req, res, next) => {
     try {
         let {email, password} = req.body;
         let user = await UserModel.findOne({email});
         if(user == null){
-            res.status(404).json({message: `User with ${username} not found`});
+            return res.status(404).json({message: `User with ${username} not found`});
         }
         let matches = await bcrypt.compare(password, user.password);
         if(!matches){
-            res.status(400).json({message: 'Invalid password'});
+            return res.status(400).json({message: 'Invalid password'});
         }
         let token = jwt.sign({username: user.username, id: user._id}, global.jwtKey, {
             algorithm: "HS256",
             expiresIn: global.jwtExpires
         });
         res.set('Authorization', `Bearer ${token}`);
-        res.status(204).json(null);
+        return res.status(204).json(null);
     } catch (error) {
         next(error);
     }
@@ -51,7 +70,7 @@ app.post('/users', async (req, res, next) => {
             expiresIn: global.jwtExpires
         });
         res.set('Authorization', `Bearer ${token}`);
-        res.status(201).json(user);
+        return res.status(201).json(user);
     } catch (error) {
         next(error);
     }
@@ -61,7 +80,7 @@ app.post('/users', async (req, res, next) => {
 app.get('/users', async (req, res, next) => {
     try {
         let users = await UserModel.find();
-        res.status(200).json(users);
+        return res.status(200).json(users);
     } catch (error) {
         next(error);
     }
@@ -71,34 +90,53 @@ app.get('/users/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         let user = await UserModel.findById(id);
-        res.status(200).json(user);
+        return res.status(200).json(user);
     } catch (error) {
         next(error);
     }
 });
 
 
-app.patch('/users/:id', async (req, res, next) => {
+app.patch('/users/:id', authMiddleware, async (req, res, next) => {
     try {
+        let {payload} = req;
         let {id} = req.params;
+        if(payload.id != id){
+            return res.status(403).json({message: 'Forbidden'});
+        }
         if(req.body.password != undefined){
-            req.body.password = await bcrypt.hash(req.body.password, 10);
+            return req.body.password = await bcrypt.hash(req.body.password, 10);
         }
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt: new Date()}, {new: true});
-        res.status(200).json(user);
+        return res.status(200).json(user);
     } catch (error) {
         next(error);
     }
 });
 
-app.delete('/users/:id', async (req, res, next) => {
+app.delete('/users/:id', authMiddleware, async (req, res, next) => {
     try {
+        let {payload} = req;
         let {id} = req.params;
+        if(payload.id != id){
+            return res.status(403).json({message: 'Forbidden'});
+        }
         let user = await UserModel.findByIdAndDelete(id);
-        res.status(204).json(null);
+        return res.status(204).json(null);
     } catch (error) {
         next(error);
     }
+});
+
+
+app.get("/public", async (req, res, next) => {
+    return res.status(200).json({message: "Public page"});
+});
+
+app.get("/protected", authMiddleware, async (req, res, next) => {
+    // payload is set on req object in authMiddleware
+    console.log(req.payload);
+    return res.status(200).json({message: "Protected page"});
 });
 
 
@@ -106,7 +144,7 @@ app.use((err, req, res, next) => {
     let error = {};
     error.status = err.status || 500;
     error.message = err.message || 'Internal server error';
-    res.json(error);
+    return res.json(error);
 });
 
 
