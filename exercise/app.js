@@ -17,6 +17,28 @@ global.jwtKey = "secret";
 global.jwtExpires = 24 * 60 * 60 * 1000;
 
 
+app.post('/login', async (req, res, next) => {
+    try {
+        let {email, password} = req.body;
+        let user = await UserModel.findOne({email});
+        if(user == null){
+            res.status(404).json({message: `User with ${username} not found`});
+        }
+        let matches = await bcrypt.compare(password, user.password);
+        if(!matches){
+            res.status(400).json({message: 'Invalid password'});
+        }
+        let token = jwt.sign({username: user.username, id: user._id}, global.jwtKey, {
+            algorithm: "HS256",
+            expiresIn: global.jwtExpires
+        });
+        res.set('Authorization', `Bearer ${token}`);
+        res.status(204).json(null);
+    } catch (error) {
+        next(error);
+    }
+});
+
 app.post('/users', async (req, res, next) => {
     try {
         let {username, email, password} = req.body;
