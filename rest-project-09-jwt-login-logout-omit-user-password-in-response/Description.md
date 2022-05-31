@@ -17,7 +17,6 @@ npm run start-dev
 Method | Path | Description
 -------|------|------------ 
 POST       |/login                           | login
-POST       |/logout                          | logout
 POST       |/users                           | create user                    
 GET        |/users                           | get all users                     
 GET        |/users/:id                       | get user by id                   
@@ -40,5 +39,13 @@ If user submit new password, password will be updated.
 {
   "username": "johnupdated",
   "email": "johnupdated@example.com"
+}
+```
+
+Request body when login
+```
+{
+  "username": "john",
+  "password": "john"
 }
 ```

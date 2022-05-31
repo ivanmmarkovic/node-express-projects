@@ -40,19 +40,19 @@ app.post("/login", async (req, res, next) => {
     }
 });
 
-app.post("/logout", async (req, res, next) => {
-    try {
-        const token = jwt.sign({username: "", id: 0}, global.jwtKey, {
-            algorithm: "HS256",
-            expiresIn: 0
-        });
-        res.set("Authorization", "Bearer " + token);
-        res.status(200);
-        res.send(null);
-    } catch (error) {
-        next(error);   
-    }
-});
+// app.post("/logout", async (req, res, next) => {
+//     try {
+//         const token = jwt.sign({username: "", id: 0}, global.jwtKey, {
+//             algorithm: "HS256",
+//             expiresIn: 0
+//         });
+//         res.set("Authorization", "Bearer " + token);
+//         res.status(200);
+//         res.send(null);
+//     } catch (error) {
+//         next(error);   
+//     }
+// });
 
 app.post('/users', async (req, res, next) => {
     try {
