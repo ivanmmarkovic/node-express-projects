@@ -7,7 +7,7 @@ const create = async (req, res, next) => {
             title, body, 
             createdAt: new Date()
         });
-        res.status(201).json(article);
+        return res.status(201).json(article);
     } catch (error) {
         error.status = 400;
         next(error);
@@ -17,7 +17,7 @@ const create = async (req, res, next) => {
 const findAll =  async (req, res, next) => {
     try {
         let articles = await ArticleModel.find();
-        res.status(200).json(articles);
+        return res.status(200).json(articles);
     } catch (error) {
         next(error);
     }
@@ -28,11 +28,11 @@ const findOne = async (req, res, next) => {
         let {id} = req.params;
         let article = await ArticleModel.findById(id).populate("comments");
         if(article == null){
-            res.status(404).json({message: 'Not found'});
+            return res.status(404).json({message: 'Not found'});
         }
-        res.status(200).json(article);
+        return res.status(200).json(article);
     } catch (error) {
-        res.status(500).json(error);
+        return res.status(500).json(error);
     }
 };
 
@@ -41,11 +41,11 @@ const update = async (req, res, next) => {
         let {id} = req.params;
         let article = await ArticleModel.findByIdAndUpdate(id, {...req.body}, {new: true});
         if(article == null){
-            res.status(404).json({message: 'Not found'});
+            return res.status(404).json({message: 'Not found'});
         }
-        res.status(200).json(article);
+        return res.status(200).json(article);
     } catch (error) {
-        res.status(500).json(error);
+        return res.status(500).json(error);
     }
 };
 
@@ -54,9 +54,9 @@ const deleteArticle = async (req, res, next) => {
         let {id} = req.params;
         //await ArticleModel.deleteOne({"_id": id});
         await ArticleModel.findByIdAndDelete(id); // same as code above
-        res.status(204).json(null);
+        return res.status(204).json(null);
     } catch (error) {
-        res.status(500).json(error);
+        return res.status(500).json(error);
     }
 };
 
