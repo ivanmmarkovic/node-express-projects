@@ -1,5 +1,5 @@
 
-const UserModel = require('./models/User');
+const UserModel = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -46,13 +46,17 @@ const patchUserById = async (req, res, next) => {
     try {
         let {payload} = req;
         let {id} = req.params;
+        console.log(payload);
+        console.log(id);
         if(payload.id != id){
             return res.status(403).json({message: 'Forbidden'});
         }
         if(req.body.password != undefined){
-            return req.body.password = await bcrypt.hash(req.body.password, 10);
+            req.body.password = await bcrypt.hash(req.body.password, 10);
         }
+        console.log(req.body.password);
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt: new Date()}, {new: true});
+        console.log(user);
         return res.status(200).json(user);
     } catch (error) {
         next(error);
