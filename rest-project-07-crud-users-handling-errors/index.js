@@ -19,7 +19,7 @@ app.post('/users', async (req, res, next) => {
         let createdAt = new Date();
         let updatedAt = new Date();
         let user = await UserModel.create({username, email, createdAt, updatedAt});
-        res.status(201).json(user);
+        return res.status(201).json(user);
     } catch (error) {
         next(error);
     }
@@ -28,7 +28,7 @@ app.post('/users', async (req, res, next) => {
 app.get('/users', async (req, res, next) => {
     try {
         let users = await UserModel.find();
-        res.status(200).json(users);
+        return res.status(200).json(users);
     } catch (error) {
         next(error);
     }
@@ -39,9 +39,9 @@ app.get('/users/:id', async (req, res, next) => {
         let {id} = req.params;
         let user = await UserModel.findById(id);
         if(user == null){
-            res.status(404).json({message: "Not found"});
+            return res.status(404).json({message: "Not found"});
         }
-        res.status(200).json(user);
+        return res.status(200).json(user);
     } catch (error) {
         next(error);
     }
@@ -53,9 +53,9 @@ app.patch('/users/:id', async (req, res, next) => {
         let updatedAt = new Date();
         let user = await UserModel.findByIdAndUpdate(id, {...req.body, updatedAt}, {new: true});
         if(user == null){
-            res.status(404).json({message: "Not found"});
+            return res.status(404).json({message: "Not found"});
         }
-        res.status(200).json(user);
+        return res.status(200).json(user);
     } catch (error) {
         next(error);
     }
@@ -65,7 +65,7 @@ app.delete('/users/:id', async (req, res, next) => {
     try {
         let {id} = req.params;
         await UserModel.findByIdAndDelete(id);
-        res.status(204).json(null);
+        return res.status(204).json(null);
     }catch(error){
         next(error);
     }
@@ -77,7 +77,7 @@ app.use((err, req, res, next) => {
         message: err.message || "Internal server error",
         status: err.status || 500
     };
-    res.status(err.status).json(error);
+    return res.status(err.status).json(error);
 });
 
 app.listen(5000, () => console.log('Listen on port 5000'));
