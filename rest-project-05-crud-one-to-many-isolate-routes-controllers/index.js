@@ -22,7 +22,7 @@ app.use((err, req, res, next) => {
     let error = {};
     error.status = err.status || 500;
     error.message = err.message || 'Internal server error';
-    res.json(error);
+    return res.json(error);
 });
 
 app.listen(5000, () => console.log('Listen on port 5000'));
