@@ -5,6 +5,9 @@ const dotenv = require('dotenv');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
+const userRouter = require('./routes/User');
+const authRouter = require('./routes/Auth');
+
 dotenv.config();
 
 mongoose.connect(process.env.MONGO_URL, {
@@ -18,10 +21,8 @@ app.use(express.json());
 app.use(helmet());
 app.use(morgan('common'));
 
-
-app.get('/', async (req, res, next) => {
-    return res.status(200).json({message: 'Hello'})
-});
+app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 
 
 
