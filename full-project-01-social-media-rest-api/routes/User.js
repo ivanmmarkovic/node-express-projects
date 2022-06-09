@@ -29,11 +29,25 @@ router.put('/:id', async (req, res, next) => {
 
 router.delete('/:id', async (req, res, next) => {
     if(req.body.userId == req.params.id || req.body.isAdmin){
-        await UserModel.findByIdAndDelete(req.params.id);
-        return res.status(204).json('Account has been updated');
+        try {
+            await UserModel.findByIdAndDelete(req.params.id);
+            return res.status(204).json('Account has been updated');
+        } catch (error) {
+            return res.status(500).json(err);
+        }
     }
     else{
         return res.status(403).json('You can update only your account');
+    }
+});
+
+router.get('/:id', async (req, res, next) => {
+    try {
+        const user = await UserModel.findById(req.params.id);
+        const {password, updatedAt, ...other} = user._doc;
+        return res.status(200).json(other);
+    } catch (error) {
+        return res.status(500).json(err);
     }
 });
 
