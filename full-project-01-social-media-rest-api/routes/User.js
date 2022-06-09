@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const UserModel = require('../models/User');
 
 router.put('/:id', async (req, res, next) => {
-    if(req.body.userId == req.params.id || req.user.isAdmin){
+    if(req.body.userId == req.params.id || req.body.isAdmin){
         if(req.body.password){
             try {
                 const salt = await bcrypt.genSalt(10);
@@ -21,6 +21,16 @@ router.put('/:id', async (req, res, next) => {
                 return res.status(500).json(err);
             }
         }
+    }
+    else{
+        return res.status(403).json('You can update only your account');
+    }
+});
+
+router.delete('/:id', async (req, res, next) => {
+    if(req.body.userId == req.params.id || req.body.isAdmin){
+        await UserModel.findByIdAndDelete(req.params.id);
+        return res.status(204).json('Account has been updated');
     }
     else{
         return res.status(403).json('You can update only your account');
