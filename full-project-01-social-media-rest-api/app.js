@@ -7,6 +7,7 @@ const morgan = require('morgan');
 
 const userRouter = require('./routes/User');
 const authRouter = require('./routes/Auth');
+const postRouter = require('./routes/Post');
 
 dotenv.config();
 
@@ -23,7 +24,7 @@ app.use(morgan('common'));
 
 app.use('/api/users', userRouter);
 app.use('/api/auth', authRouter);
-
+app.use('/api/posts', postRouter);
 
 
 app.listen(5000, () => console.log('Listening on port 5000'));
