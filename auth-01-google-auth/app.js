@@ -1,5 +1,6 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const ejs = require('ejs');
 
 const app = express();
 
@@ -7,10 +8,14 @@ dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
+app.set('view engine', 'ejs');
+
+
+
 app.get('/', (req, res, next) => {
-    res.json('hello');
+    res.render('index');
 });
 
 
 
-app.listen(5000, () => console.log('App listen on port 5000'));
+app.listen(PORT, () => console.log(`App listen on port ${PORT}`));
