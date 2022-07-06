@@ -14,12 +14,27 @@ const wss = new WebSocket.Server({
 });
 
 
-// when client connects to server, this message will be sent
+/*
+const clients = [];
+
 wss.on('connection', function(ws){
     //ws.send('Hello from the server');
-
+    clients.push(ws);
     ws.on('message', function(data){
-        //console.log(data);
-        ws.send(data.toString());
+        clients.forEach(client => client.send(data.toString()));
+    })
+});
+
+*/
+
+wss.on('connection', function(ws){
+    ws.on('message', function(data){
+        wss.clients.forEach(
+            function each(client){
+                if(client.readyState == WebSocket.OPEN){
+                    client.send(data.toString());
+                }
+            }
+        )
     })
 });
