@@ -16,10 +16,10 @@ const wss = new WebSocket.Server({
 
 // when client connects to server, this message will be sent
 wss.on('connection', function(ws){
-    ws.send('Hello from the server');
+    //ws.send('Hello from the server');
 
     ws.on('message', function(data){
         //console.log(data);
-        ws.send(data);
+        ws.send(data.toString());
     })
 });
