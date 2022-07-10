@@ -6,7 +6,7 @@ When server receives connection
  - request will allow to authenticate the user
 
 
-```javascript
+```
 
 server.on('upgrade', function upgrade(request, socket, head) {
     
@@ -31,5 +31,48 @@ server.on('upgrade', function upgrade(request, socket, head) {
     });
 
 });
+
+```
+
+
+
+# Multiple servers sharing a single HTTP/S server
+
+
+```
+
+import { createServer } from 'http';
+import { parse } from 'url';
+import { WebSocketServer } from 'ws';
+
+const server = createServer();
+const wss1 = new WebSocketServer({ noServer: true });
+const wss2 = new WebSocketServer({ noServer: true });
+
+wss1.on('connection', function connection(ws) {
+  // ...
+});
+
+wss2.on('connection', function connection(ws) {
+  // ...
+});
+
+server.on('upgrade', function upgrade(request, socket, head) {
+  const { pathname } = parse(request.url);
+
+  if (pathname === '/foo') {
+    wss1.handleUpgrade(request, socket, head, function done(ws) {
+      wss1.emit('connection', ws, request);
+    });
+  } else if (pathname === '/bar') {
+    wss2.handleUpgrade(request, socket, head, function done(ws) {
+      wss2.emit('connection', ws, request);
+    });
+  } else {
+    socket.destroy();
+  }
+});
+
+server.listen(8080);
 
 ```
