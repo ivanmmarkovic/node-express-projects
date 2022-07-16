@@ -1,15 +1,5 @@
+const path = require("path")
 
-
-### enctype="multipart/form-data"
-- If using fetch, no need for enctype
-
-### FormData
-- express expects that format - FormData
-
-
-### fileExtLimiter
-- fileExtLimiter returns closure, keep allowedExtArray 
-```
 const fileExtLimiter = (allowedExtArray) => {
     return (req, res, next) => {
         const files = req.files
@@ -31,8 +21,5 @@ const fileExtLimiter = (allowedExtArray) => {
         next()
     }
 }
-```
 
-
-
-[Link](https://www.youtube.com/watch?v=4pmkQjsKJ-U)
+module.exports = fileExtLimiter
