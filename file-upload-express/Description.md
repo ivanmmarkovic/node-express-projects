@@ -31,6 +31,29 @@ const fileExtLimiter = (allowedExtArray) => {
         next()
     }
 }
+
+
+app.post('/upload', 
+    fileUpload({createParentPath: true}), filesPayloadExists,
+    fileExtLimiter(['.png', '.jpg', '.jpeg']),
+    fileSizeLimiter,
+    (req, res) => {
+        const files = req.files;
+        console.log(files);
+
+        return res.json({
+            status: 'logged',
+            message: 'logged'
+        })
+    });
+
+
+/*
+fileExtLimiter(['.png', '.jpg', '.jpeg']),
+returns function, and that function is a middleware
+
+*/
+
 ```
 
 
