@@ -1,3 +1,5 @@
+const WebSocket = require('ws');
+
 const express = require('express');
 const app = express();
 
@@ -8,9 +10,29 @@ const PORT = process.env.PORT || 5000;
 app.set('view engine', 'ejs');
 
 
+app.use(express.static('public'));
+
 app.get('/', async (req, res, next) => {
-    res.render('index', {title: 'Home'});
+    res.render('index', { title: 'Home' });
 });
 
 
-app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
+
+
+const wss = new WebSocket.Server({
+    noServer: true
+});
+
+
+wss.on('connection', (client) => {
+    client.send('You\'re connected');
+});
+
+server.on('upgrade', function upgrade(request, socket, head) {
+    
+    wss.handleUpgrade(request, socket, head, function done(ws) {
+        wss.emit('connection', ws, request);
+    });
+
+});
