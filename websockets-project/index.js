@@ -25,12 +25,16 @@ const wss = new WebSocket.Server({
 });
 
 
-wss.on('connection', (client) => {
-    client.send('You\'re connected');
+wss.on('connection', (ws) => {
+    ws.send('You\'re connected');
+
+    ws.on('message', function message(data) {
+        ws.send(data.toString());
+    });
 });
 
 server.on('upgrade', function upgrade(request, socket, head) {
-    
+
     wss.handleUpgrade(request, socket, head, function done(ws) {
         wss.emit('connection', ws, request);
     });
