@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const userRouter = require('./routes/User');
+const authRouter = require('./routes/Auth');
 
 dotenv.config();
 
@@ -18,7 +19,7 @@ mongoose
 
 
 app.use(express.json());
-
+app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 
 app.listen(PORT, () => console.log(`Server listen on port ${PORT}`));
