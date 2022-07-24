@@ -1,0 +1,7 @@
+
+
+MONGO_URL = mongodb://admin:password@localhost:27017/articles?authSource=admin
+PORT = 5000
+
+PASS_SEC = secretcodehere
+JWT_SEC = secretcodehere
